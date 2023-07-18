@@ -1,0 +1,25 @@
+.caja_busqueda_api{
+    background: #b7e2b7;
+    padding: 15px;
+    margin-top: 25px;
+    margin-bottom: 19px;
+    border: dashed green;
+}
+
+#drop-area{
+    background: #c3d2ff;
+    padding: 26px 20px 15px 15px;
+    margin-top: 25px;
+    margin-bottom: 19px;
+    border: dashed #0062cc;
+    text-align: center;
+    cursor: pointer;
+}
+
+#drop-area img{
+    width: 100%;
+}
+
+.num-libros{
+    margin: 20px 0;
+}

@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Listado de Libros</title>
+    <title>Palanthas</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Agrega los enlaces a los estilos de Bootstrap -->
@@ -31,7 +31,18 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <h1>Listado de Libros</h1>
+                <h1 class="titulo">Mis Libros</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <form id="ordenarForm" action="{{ route('libros.index') }}" method="GET" class="form-inline mb-3">
+                    <label for="ordenarPor" class="mr-2">Ordenar por:</label>
+                    <select name="ordenarPor" id="ordenarPor" class="form-control mr-2">
+                        <option value="titulo" {{ request('ordenarPor', 'titulo') === 'titulo' ? 'selected' : '' }}>Título</option>
+                        <option value="autor" {{ request('ordenarPor') === 'autor' ? 'selected' : '' }}>Autor</option>
+                    </select>
+                </form>
             </div>
         </div>
         <div class="row">

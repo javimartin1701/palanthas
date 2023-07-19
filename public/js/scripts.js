@@ -172,3 +172,8 @@ $(document).ready(function() {
 });
 
 
+
+document.getElementById('ordenarPor').addEventListener('change', function() {
+  document.getElementById('ordenarForm').submit();
+});
+

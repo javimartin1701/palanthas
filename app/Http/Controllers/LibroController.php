@@ -22,8 +22,11 @@ class LibroController extends Controller
     // Obtener el usuario autenticado
     $user = auth()->user();
 
-    // Obtener los libros asociados al usuario actual
-    $libros = $user->libros;
+  // Obtener el tipo de orden seleccionado (por defecto, ordenar por título)
+  $ordenarPor = $request->input('ordenarPor', 'titulo');
+
+  // Obtener los libros asociados al usuario actual y ordenarlos según el tipo de ordenamiento
+  $libros = $user->libros->sortBy($ordenarPor);
     
     $cantidadLibros = $libros->count();
 

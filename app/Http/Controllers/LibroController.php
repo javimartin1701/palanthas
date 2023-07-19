@@ -143,7 +143,7 @@ public function store(Request $request)
 
 
     // Guardar la imagen de la portada en una carpeta personalizada
-$portadaPath = $request->file('portada')->store('public/portadas/portadas', 'public');
+$portadaPath = $request->file('portada')->store('portadas', 'public');
 $portadaUrl = Storage::url($portadaPath);
 
 // Obtener el nombre del archivo con extensión

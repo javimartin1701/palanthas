@@ -38,11 +38,11 @@ return [
 
         'public' => [
             'driver' => 'local',
-            'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            'root' => public_path('portadas'), // Ruta de la carpeta "public/portadas"
+            'url' => env('APP_URL').'/portadas', // URL para acceder a la carpeta "public/portadas"
             'visibility' => 'public',
-            'throw' => false,
         ],
+        
 
         's3' => [
             'driver' => 's3',

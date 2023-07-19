@@ -142,13 +142,17 @@ public function store(Request $request)
     // $libro->save();
 
 
-    // Guardar la imagen de la portada en una carpeta personalizada
-$portadaPath = $request->file('portada')->store('public/portadas/portadas', 'public');
+   // Guardar la imagen de la portada en una carpeta personalizada
+$portadaPath = $request->file('portada')->store('public/portadas', 'public');
 $portadaUrl = Storage::url($portadaPath);
 
-// Modificar la ruta almacenada en la base de datos
-$libro->portada = str_replace('public', 'public/portadas/portadas', $portadaUrl);
+// Obtener solo el nombre del archivo
+$nombreArchivo = pathinfo($portadaUrl, PATHINFO_FILENAME);
+
+// Guardar solo el nombre del archivo en la base de datos
+$libro->portada = $nombreArchivo;
 $libro->save();
+
 
 
 

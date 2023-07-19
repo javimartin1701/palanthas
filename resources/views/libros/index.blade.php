@@ -55,7 +55,7 @@
                             <td>{{ $libro->paginas }}</td>
                             <td>{{ $libro->isbn }}</td>
                             <td>
-                                <img src="{{ $libro->portada }}" alt="Portada" width="50" class="img-thumbnail">
+                                <img src="/public/portadas/portadas/{{ $libro->portada }}" alt="Portada" width="50" class="img-thumbnail">
                             </td>
                             <td>
                                 <!-- Botón para abrir el modal de confirmación de borrado -->

@@ -78,7 +78,40 @@ class LibroController extends Controller
 
 
 
-    public function store(Request $request)
+//     public function store(Request $request)
+// {
+//     $data = $request->validate([
+//         'titulo' => 'required',
+//         'autor' => 'required',
+//         'editorial' => 'required',
+//         'paginas' => 'required|integer',
+//         'isbn' => 'required',
+//         'portada' => 'required|image|max:2048', // Asegura que se cargue una imagen válida y que no supere 2MB
+//     ]);
+
+//     $user = auth()->user();
+
+//     $libro = new Libro([
+//         'titulo' => $data['titulo'],
+//         'autor' => $data['autor'],
+//         'editorial' => $data['editorial'],
+//         'paginas' => $data['paginas'],
+//         'isbn' => $data['isbn'],
+//     ]);
+
+//     // Asociar el libro al usuario actual
+//     $user->libros()->save($libro);
+
+//     // Guardar la imagen de la portada
+//     $portadaPath = $request->file('portada')->store('public/portadas');
+//     $portadaUrl = Storage::url($portadaPath);
+//     $libro->portada = $portadaUrl;
+//     $libro->save();
+
+//     return redirect()->route('libros.index');
+// }
+
+public function store(Request $request)
 {
     $data = $request->validate([
         'titulo' => 'required',
@@ -102,14 +135,16 @@ class LibroController extends Controller
     // Asociar el libro al usuario actual
     $user->libros()->save($libro);
 
-    // Guardar la imagen de la portada
-    $portadaPath = $request->file('portada')->store('public/portadas');
+    // Guardar la imagen de la portada en una carpeta personalizada
+    $portadaPath = $request->file('portada')->store('public/portadas'); // Cambia "custom_folder" al nombre de tu carpeta personalizada
     $portadaUrl = Storage::url($portadaPath);
     $libro->portada = $portadaUrl;
     $libro->save();
 
     return redirect()->route('libros.index');
 }
+
+
 
 
     public function destroy($id)

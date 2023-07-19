@@ -142,8 +142,8 @@ public function store(Request $request)
     // $libro->save();
 
 
-  // Guardar la imagen de la portada en una carpeta personalizada
-$portadaPath = $request->file('portada')->store('public/portadas', 'public');
+    // Guardar la imagen de la portada en una carpeta personalizada
+$portadaPath = $request->file('portada')->store('public/portadas/portadas', 'public');
 $portadaUrl = Storage::url($portadaPath);
 
 // Obtener el nombre del archivo con extensión
@@ -152,8 +152,6 @@ $nombreArchivoConExtension = pathinfo($portadaUrl, PATHINFO_BASENAME);
 // Guardar el nombre del archivo con extensión en la base de datos
 $libro->portada = $nombreArchivoConExtension;
 $libro->save();
-
-
 
 
 

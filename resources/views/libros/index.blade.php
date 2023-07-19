@@ -41,6 +41,7 @@
                     <select name="ordenarPor" id="ordenarPor" class="form-control mr-2">
                         <option value="titulo" {{ request('ordenarPor', 'titulo') === 'titulo' ? 'selected' : '' }}>Título</option>
                         <option value="autor" {{ request('ordenarPor') === 'autor' ? 'selected' : '' }}>Autor</option>
+                        <option value="editorial" {{ request('ordenarPor') === 'editorial' ? 'selected' : '' }}>Editorial</option>
                     </select>
                 </form>
             </div>

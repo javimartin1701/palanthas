@@ -135,11 +135,19 @@ public function store(Request $request)
     // Asociar el libro al usuario actual
     $user->libros()->save($libro);
 
+    // // Guardar la imagen de la portada en una carpeta personalizada
+    // $portadaPath = $request->file('portada')->store('public/portadas'); // Cambia "custom_folder" al nombre de tu carpeta personalizada
+    // $portadaUrl = Storage::url($portadaPath);
+    // $libro->portada = $portadaUrl;
+    // $libro->save();
+
+
     // Guardar la imagen de la portada en una carpeta personalizada
-    $portadaPath = $request->file('portada')->store('public/portadas'); // Cambia "custom_folder" al nombre de tu carpeta personalizada
+    $portadaPath = $request->file('portada')->store('portadas', 'public');
     $portadaUrl = Storage::url($portadaPath);
     $libro->portada = $portadaUrl;
     $libro->save();
+
 
     return redirect()->route('libros.index');
 }

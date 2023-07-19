@@ -26,54 +26,65 @@
 
     <div class="container">
         <div class="row">
-            <h1>Listado de Libros</h1>
-        </div>
-        <div class="row">
-            <div class="num-libros">
-                <span style="font-weight:bold">TOTAL LIBROS:</span> {{ $cantidadLibros }}
+            <div class="col-12">
+                <h1>Listado de Libros</h1>
             </div>
         </div>
         <div class="row">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Título</th>
-                        <th>Autor</th>
-                        <th>Editorial</th>
-                        <th>Páginas</th>
-                        <th>ISBN</th>
-                        <th>Portada</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($libros as $libro)
-                        <tr>
-                            <td>{{ $libro->titulo }}</td>
-                            <td>{{ $libro->autor }}</td>
-                            <td>{{ $libro->editorial }}</td>
-                            <td>{{ $libro->paginas }}</td>
-                            <td>{{ $libro->isbn }}</td>
-                            <td>
-                                <img src="/public/portadas/portadas/{{ $libro->portada }}" alt="Portada" width="50" class="img-thumbnail">
-                            </td>
-                            <td>
-                                <!-- Botón para abrir el modal de confirmación de borrado -->
-                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirm-delete-modal" data-id="{{ $libro->id }}">Eliminar</button>
-
-                                <!-- Botón de edición -->
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#edit-libro-modal" data-id="{{ $libro->id }}">Editar</button>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+            <div class="col-12">
+                <div class="num-libros">
+                    <span style="font-weight:bold">TOTAL LIBROS:</span> {{ $cantidadLibros }}
+                </div>
+            </div>
         </div>
         <div class="row">
-             <!-- Botón para añadir nuevo libro -->
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-libro-modal">Añadir Libro</button>
+            <div class="col-12">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Título</th>
+                                <th>Autor</th>
+                                <th>Editorial</th>
+                                <th>Páginas</th>
+                                <th>ISBN</th>
+                                <th>Portada</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($libros as $libro)
+                                <tr>
+                                    <td>{{ $libro->titulo }}</td>
+                                    <td>{{ $libro->autor }}</td>
+                                    <td>{{ $libro->editorial }}</td>
+                                    <td>{{ $libro->paginas }}</td>
+                                    <td>{{ $libro->isbn }}</td>
+                                    <td>
+                                        <img src="/public/portadas/portadas/{{ $libro->portada }}" alt="Portada" width="50" class="img-thumbnail">
+                                    </td>
+                                    <td>
+                                        <!-- Botón para abrir el modal de confirmación de borrado -->
+                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirm-delete-modal" data-id="{{ $libro->id }}">Eliminar</button>
+    
+                                        <!-- Botón de edición -->
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#edit-libro-modal" data-id="{{ $libro->id }}">Editar</button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <!-- Botón para añadir nuevo libro -->
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-libro-modal">Añadir Libro</button>
+            </div>
         </div>
     </div>
+    
     
    
 

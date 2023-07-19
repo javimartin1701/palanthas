@@ -92,11 +92,13 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <form id="delete-form" action="{{ route('libros.destroy', '__id') }}" method="POST">
+                   <!-- Dentro del foreach de la tabla -->
+                    <form id="delete-form" action="{{ route('libros.destroy', $libro->id) }}" method="POST">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger">Eliminar</button>
                     </form>
+
                 </div>
             </div>
         </div>

@@ -236,6 +236,39 @@ public function buscargoogle(Request $request){
 }
 
 
+public function exportar()
+{
+    // Obtener los libros asociados al usuario actual
+    $user = auth()->user();
+    $libros = $user->libros;
+
+    // Crear el contenido del archivo CSV
+    $csvData = [];
+    $csvData[] = ['Título', 'Autor', 'Editorial', 'Páginas', 'ISBN'];
+    foreach ($libros as $libro) {
+        $csvData[] = [$libro->titulo, $libro->autor, $libro->editorial, $libro->paginas, $libro->isbn];
+    }
+
+    // Crear el nombre del archivo CSV
+    $fileName = 'libros_' . date('Y-m-d_H-i-s') . '.csv';
+
+    // Generar el archivo CSV
+    $file = fopen('php://temp', 'w');
+    foreach ($csvData as $row) {
+        fputcsv($file, $row);
+    }
+    rewind($file);
+    $csvContent = stream_get_contents($file);
+    fclose($file);
+
+    // Descargar el archivo CSV
+    return response($csvContent)
+        ->header('Content-Type', 'text/csv')
+        ->header('Content-Disposition', 'attachment; filename="' . $fileName . '"');
+}
+
+
+
 
 }
 

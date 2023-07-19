@@ -29,6 +29,7 @@ Route::put('/libros/{id}', [LibroController::class, 'update'])->name('libros.upd
 Route::post('/buscar', [LibroController::class, 'buscar'])->name('libros.buscar');
 Route::post('/buscargoogle', [LibroController::class, 'buscargoogle'])->name('libros.buscargoogle');
 
+Route::get('/exportar', [LibroController::class, 'exportar'])->name('libros.exportar');
 
 
 
@@ -45,3 +46,5 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 });
+
+

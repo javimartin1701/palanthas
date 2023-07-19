@@ -43,9 +43,13 @@
                         <option value="autor" {{ request('ordenarPor') === 'autor' ? 'selected' : '' }}>Autor</option>
                         <option value="editorial" {{ request('ordenarPor') === 'editorial' ? 'selected' : '' }}>Editorial</option>
                     </select>
+
+                    <a href="{{ route('libros.exportar') }}" class="btn btn-success">Exportar CSV</a>
+
                 </form>
             </div>
         </div>
+        
         <div class="row">
             <div class="col-12">
                 <div class="num-libros">

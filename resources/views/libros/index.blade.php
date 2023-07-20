@@ -109,31 +109,33 @@
    
 
     <!-- Modal de confirmación de borrado -->
-    <div class="modal fade" id="confirm-delete-modal" tabindex="-1" role="dialog" aria-labelledby="confirm-delete-modal-label" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="confirm-delete-modal-label">Confirmar Eliminación</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>¿Estás seguro de que deseas eliminar este libro?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                   <!-- Dentro del foreach de la tabla -->
-                    <form id="delete-form" action="{{ route('libros.destroy', $libro->id) }}" method="POST">
+<div class="modal fade" id="confirm-delete-modal" tabindex="-1" role="dialog" aria-labelledby="confirm-delete-modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirm-delete-modal-label">Confirmar Eliminación</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>¿Estás seguro de que deseas eliminar este libro?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <!-- Dentro del foreach de la tabla -->
+                @if (isset($bookToDelete))
+                    <form id="delete-form" action="{{ route('libros.destroy', $bookToDelete->id) }}" method="POST">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger">Eliminar</button>
                     </form>
-
-                </div>
+                @endif
             </div>
         </div>
     </div>
+</div>
+
 
     <!-- Modal para añadir nuevo libro -->
     <div class="modal fade" id="add-libro-modal" tabindex="-1" role="dialog" aria-labelledby="add-libro-modal-label" aria-hidden="true">

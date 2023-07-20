@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Libro;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 
 
 
@@ -81,86 +82,45 @@ class LibroController extends Controller
 
 
 
-//     public function store(Request $request)
-// {
-//     $data = $request->validate([
-//         'titulo' => 'required',
-//         'autor' => 'required',
-//         'editorial' => 'required',
-//         'paginas' => 'required|integer',
-//         'isbn' => 'required',
-//         'portada' => 'required|image|max:2048', // Asegura que se cargue una imagen válida y que no supere 2MB
-//     ]);
-
-//     $user = auth()->user();
-
-//     $libro = new Libro([
-//         'titulo' => $data['titulo'],
-//         'autor' => $data['autor'],
-//         'editorial' => $data['editorial'],
-//         'paginas' => $data['paginas'],
-//         'isbn' => $data['isbn'],
-//     ]);
-
-//     // Asociar el libro al usuario actual
-//     $user->libros()->save($libro);
-
-//     // Guardar la imagen de la portada
-//     $portadaPath = $request->file('portada')->store('public/portadas');
-//     $portadaUrl = Storage::url($portadaPath);
-//     $libro->portada = $portadaUrl;
-//     $libro->save();
-
-//     return redirect()->route('libros.index');
-// }
-
-public function store(Request $request)
-{
-    $data = $request->validate([
-        'titulo' => 'required',
-        'autor' => 'required',
-        'editorial' => 'required',
-        'paginas' => 'required|integer',
-        'isbn' => 'required',
-        'portada' => 'required|image|max:2048', // Asegura que se cargue una imagen válida y que no supere 2MB
-    ]);
-
-    $user = auth()->user();
-
-    $libro = new Libro([
-        'titulo' => $data['titulo'],
-        'autor' => $data['autor'],
-        'editorial' => $data['editorial'],
-        'paginas' => $data['paginas'],
-        'isbn' => $data['isbn'],
-    ]);
-
-    // Asociar el libro al usuario actual
-    $user->libros()->save($libro);
-
-    // // Guardar la imagen de la portada en una carpeta personalizada
-    // $portadaPath = $request->file('portada')->store('public/portadas'); // Cambia "custom_folder" al nombre de tu carpeta personalizada
-    // $portadaUrl = Storage::url($portadaPath);
-    // $libro->portada = $portadaUrl;
-    // $libro->save();
-
-
-    // Guardar la imagen de la portada en una carpeta personalizada
-$portadaPath = $request->file('portada')->store('portadas', 'public');
-$portadaUrl = Storage::url($portadaPath);
-
-// Obtener el nombre del archivo con extensión
-$nombreArchivoConExtension = pathinfo($portadaUrl, PATHINFO_BASENAME);
-
-// Guardar el nombre del archivo con extensión en la base de datos
-$libro->portada = $nombreArchivoConExtension;
-$libro->save();
-
-
-
-
-    return redirect()->route('libros.index');
-}
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'titulo' => 'required',
+            'autor' => 'required',
+            'editorial' => 'required',
+            'paginas' => 'required|integer',
+            'isbn' => 'required',
+            'portada' => 'required|image|max:2048', // Asegura que se cargue una imagen válida y que no supere 2MB
+        ]);
+    
+        $user = auth()->user();
+    
+        $libro = new Libro([
+            'titulo' => $data['titulo'],
+            'autor' => $data['autor'],
+            'editorial' => $data['editorial'],
+            'paginas' => $data['paginas'],
+            'isbn' => $data['isbn'],
+        ]);
+    
+        // Asociar el libro al usuario actual
+        $user->libros()->save($libro);
+    
+        // Procesar la imagen antes de guardarla
+        if ($request->hasFile('portada')) {
+            $portada = $request->file('portada');
+            $nombreArchivo = time() . '.' . $portada->getClientOriginalExtension();
+    
+            // Redimensionar y ajustar el formato de la imagen antes de guardarla
+            $rutaPortada = public_path('portadas/' . $nombreArchivo);
+            Image::make($portada)->resize(300, 400)->save($rutaPortada);
+    
+            $libro->portada = $nombreArchivo;
+            $libro->save();
+        }
+    
+        return redirect()->route('libros.index');
+    }
 
 
 

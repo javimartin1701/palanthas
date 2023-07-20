@@ -1,3 +1,5 @@
+<!-- resources/views/libros/index.blade.php -->
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,8 +11,8 @@
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css">
     <link rel="icon" type="image/png" sizes="16x16"  href="/img/favicon-16x16.png">
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="theme-color" content="#ffffff">
+        <meta name="msapplication-TileColor" content="#ffffff">
+        <meta name="theme-color" content="#ffffff">
     <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
 
     <!-- Fonts -->
@@ -43,6 +45,7 @@
                     </select>
 
                     <a href="{{ route('libros.exportar') }}" class="btn btn-success">Exportar CSV</a>
+
                 </form>
             </div>
         </div>
@@ -83,7 +86,7 @@
                                     <td>
                                         <!-- Botón para abrir el modal de confirmación de borrado -->
                                         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirm-delete-modal" data-id="{{ $libro->id }}">Eliminar</button>
-
+    
                                         <!-- Botón de edición -->
                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#edit-libro-modal" data-id="{{ $libro->id }}">Editar</button>
                                     </td>
@@ -101,6 +104,9 @@
             </div>
         </div>
     </div>
+    
+    
+   
 
     <!-- Modal de confirmación de borrado -->
     <div class="modal fade" id="confirm-delete-modal" tabindex="-1" role="dialog" aria-labelledby="confirm-delete-modal-label" aria-hidden="true">
@@ -177,10 +183,6 @@
                                 <input type="text" class="form-control" id="isbn_buscar" name="isbn" required>
                             </div>
                             <button type="submit" class="btn btn-success">Buscar</button>
-                            
-                            <!-- Nuevo botón para escanear código de barras -->
-                            <button type="button" class="btn btn-primary" id="scan-barcode-btn">Escanear Código de Barras</button>    
-                        
                         </form>
                     </div>
                 </div>
@@ -237,6 +239,7 @@
         </div>
     </div>
 
+
     <!-- Agrega los scripts de Bootstrap y jQuery -->
     <!-- Agrega la biblioteca completa de jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -246,128 +249,6 @@
 
     <!-- Agrega el script principal -->
     <script src="{{ asset('js/scripts.js') }}"></script>
-    
-    <!-- Agrega el script para el escaneo de ISBN -->
-    <script>
-        function scanISBN() {
-            // Verificar si el dispositivo es móvil
-            if (/Mobi|Android/i.test(navigator.userAgent)) {
-                // Solicitar permiso para acceder a la cámara
-                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                    navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
-                        .then(function(stream) {
-                            // Creamos un elemento de video para mostrar el escaneo
-                            const video = document.createElement('video');
-                            document.body.appendChild(video);
-                            video.srcObject = stream;
-                            video.play();
-
-                            // Creamos un elemento canvas para capturar el escaneo
-                            const canvas = document.createElement('canvas');
-                            canvas.width = video.videoWidth;
-                            canvas.height = video.videoHeight;
-                            const context = canvas.getContext('2d');
-
-                            // Capturamos la imagen del video en el canvas
-                            video.addEventListener('canplay', function() {
-                                context.drawImage(video, 0, 0, canvas.width, canvas.height);
-                                stream.getTracks().forEach(function(track) {
-                                    track.stop();
-                                });
-
-                                // Convertimos el canvas a una imagen base64
-                                const imageData = canvas.toDataURL('image/png');
-                                // Enviamos la imagen base64 al servidor para el procesamiento del código de barras
-                                fetch('/api/procesar_codigo_barras', {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                                    },
-                                    body: JSON.stringify({ image_data: imageData }),
-                                })
-                                .then(function(response) {
-                                    return response.json();
-                                })
-                                .then(function(data) {
-                                    // Obtenemos el ISBN del resultado de la API
-                                    const isbn = data.isbn;
-                                    // Insertamos el ISBN en el campo del formulario
-                                    document.getElementById('isbn').value = isbn.replace(/\s/g, '');
-                                    // Eliminamos el elemento video y canvas creados
-                                    document.body.removeChild(video);
-                                    document.body.removeChild(canvas);
-                                })
-                                .catch(function(error) {
-                                    console.error('Error al procesar el código de barras:', error);
-                                    // Eliminamos el elemento video y canvas creados
-                                    document.body.removeChild(video);
-                                    document.body.removeChild(canvas);
-                                });
-                            }, false);
-                        })
-                        .catch(function(error) {
-                            console.error('Error al acceder a la cámara:', error);
-                        });
-                } else {
-                    alert('El escaneo de códigos de barras no está soportado en este dispositivo.');
-                }
-            } else {
-                alert('El escaneo de códigos de barras solo está disponible en dispositivos móviles.');
-            }
-        }
-    </script>
 
 </body>
 </html>
-
-
-
-
-<!-- Agrega el script principal -->
-<!-- Agrega el script de QuaggaJS desde una CDN -->
-<script src="https://cdn.jsdelivr.net/npm/quagga@latest/dist/quagga.min.js"></script>
-
-
-<!-- Script para configurar QuaggaJS -->
-<script>
-    // Función para manejar el resultado del escaneo
-    function onScanSuccess(result) {
-        const isbnInput = document.getElementById('isbn_buscar');
-        if (isbnInput) {
-            isbnInput.value = result.codeResult.code;
-        }
-    }
-
-    // Función para manejar el error del escaneo
-    function onScanError(error) {
-        console.error('Error al escanear:', error);
-    }
-
-    // Configuración de QuaggaJS
-    Quagga.init({
-        inputStream: {
-            name: 'Live',
-            type: 'LiveStream',
-            target: document.querySelector('#scan-barcode-btn'), // Elemento del botón para activar el escaneo
-            constraints: {
-                facingMode: 'environment', // Utiliza la cámara trasera del dispositivo (puedes cambiar a 'user' para la cámara frontal)
-            },
-        },
-        decoder: {
-            readers: ['ean_reader'], // Permite escanear códigos de barras EAN
-        },
-    }, function (err) {
-        if (err) {
-            console.error('Error al inicializar Quagga:', err);
-            return;
-        }
-        console.log('Quagga inicializado correctamente.');
-        Quagga.start(); // Inicia el escaneo de códigos de barras
-    });
-
-    // Evento para detener el escaneo cuando se cierre el modal
-    $('#add-libro-modal').on('hidden.bs.modal', function () {
-        Quagga.stop();
-    });
-</script>

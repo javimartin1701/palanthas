@@ -177,8 +177,10 @@
                                 <input type="text" class="form-control" id="isbn_buscar" name="isbn" required>
                             </div>
                             <button type="submit" class="btn btn-success">Buscar</button>
-                            <!-- Botón para escanear código de barras -->
-                            <button type="button" class="btn btn-info" id="scan-isbn-btn" onclick="scanISBN()">Escanear ISBN</button>
+                            
+                            <!-- Nuevo botón para escanear código de barras -->
+                            <button type="button" class="btn btn-primary" id="scan-barcode-btn">Escanear Código de Barras</button>    
+                        
                         </form>
                     </div>
                 </div>
@@ -318,3 +320,52 @@
 
 </body>
 </html>
+
+
+
+
+<!-- Agrega el script principal -->
+<script src="{{ asset('js/scripts.js') }}"></script>
+
+<!-- Script para configurar QuaggaJS -->
+<script>
+    // Función para manejar el resultado del escaneo
+    function onScanSuccess(result) {
+        const isbnInput = document.getElementById('isbn_buscar');
+        if (isbnInput) {
+            isbnInput.value = result.codeResult.code;
+        }
+    }
+
+    // Función para manejar el error del escaneo
+    function onScanError(error) {
+        console.error('Error al escanear:', error);
+    }
+
+    // Configuración de QuaggaJS
+    Quagga.init({
+        inputStream: {
+            name: 'Live',
+            type: 'LiveStream',
+            target: document.querySelector('#scan-barcode-btn'), // Elemento del botón para activar el escaneo
+            constraints: {
+                facingMode: 'environment', // Utiliza la cámara trasera del dispositivo (puedes cambiar a 'user' para la cámara frontal)
+            },
+        },
+        decoder: {
+            readers: ['ean_reader'], // Permite escanear códigos de barras EAN
+        },
+    }, function (err) {
+        if (err) {
+            console.error('Error al inicializar Quagga:', err);
+            return;
+        }
+        console.log('Quagga inicializado correctamente.');
+        Quagga.start(); // Inicia el escaneo de códigos de barras
+    });
+
+    // Evento para detener el escaneo cuando se cierre el modal
+    $('#add-libro-modal').on('hidden.bs.modal', function () {
+        Quagga.stop();
+    });
+</script>

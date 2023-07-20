@@ -7,7 +7,7 @@ use App\Models\Libro;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Storage;
-use Intervention\Image\Facades\Image;
+use Intervention\Image\ImageManagerStatic as Image;
 
 
 
@@ -121,6 +121,7 @@ class LibroController extends Controller
     
         return redirect()->route('libros.index');
     }
+    
 
 
 

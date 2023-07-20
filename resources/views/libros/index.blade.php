@@ -325,7 +325,9 @@
 
 
 <!-- Agrega el script principal -->
-<script src="{{ asset('js/scripts.js') }}"></script>
+<!-- Agrega el script de QuaggaJS desde una CDN -->
+<script src="https://cdn.jsdelivr.net/npm/quagga@latest/dist/quagga.min.js"></script>
+
 
 <!-- Script para configurar QuaggaJS -->
 <script>
